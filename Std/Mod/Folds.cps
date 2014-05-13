@@ -70,7 +70,7 @@
         END;
 
         iconFont: Fonts.Typeface;
-        leftExp, rightExp, leftColl, rightColl: ARRAY 8 OF SHORTCHAR;
+        leftExp, rightExp, leftColl, rightColl: ARRAY 3 OF CHAR;
         coloredBackg: BOOLEAN;
         action: Action;
         fingerprint: INTEGER;    (* for the property inspector *)
@@ -128,7 +128,7 @@
         END
     END MatchingFold;
 
-    PROCEDURE GetIcon (fold: Fold; VAR icon: ARRAY OF SHORTCHAR);
+    PROCEDURE GetIcon (fold: Fold; VAR icon: ARRAY OF CHAR);
     BEGIN
         IF fold.leftSide THEN
             IF fold.collapsed THEN icon := leftColl$ ELSE icon := leftExp$ END
@@ -138,7 +138,7 @@
     END GetIcon;
 
     PROCEDURE CalcSize (f: Fold; VAR w, h: INTEGER);
-        VAR icon: ARRAY 8 OF SHORTCHAR; c: Models.Context; a: TextModels.Attributes; font: Fonts.Font;
+        VAR icon: ARRAY 3 OF CHAR; c: Models.Context; a: TextModels.Attributes; font: Fonts.Font;
             asc, dsc, fw: INTEGER;
     BEGIN
         GetIcon(f, icon);
@@ -148,7 +148,7 @@
             font := Fonts.dir.This(iconFont, a.font.size, {}, Fonts.normal)
         ELSE font := Fonts.dir.Default()
         END;
-        w := font.SStringWidth(icon);
+        w := font.StringWidth(icon);
         font.GetBounds(asc, dsc, fw);
         h := asc + dsc
     END CalcSize;
@@ -372,7 +372,7 @@
 
     PROCEDURE (fold: Fold) Restore* (f: Views.Frame; l, t, r, b: INTEGER);
         VAR a: TextModels.Attributes; color: Ports.Color; c: Models.Context; font: Fonts.Font;
-            icon: ARRAY 8 OF SHORTCHAR; w, h: INTEGER; asc, dsc, fw: INTEGER;
+            icon: ARRAY 3 OF CHAR; w, h: INTEGER; asc, dsc, fw: INTEGER;
     BEGIN
         GetIcon(fold, icon); c := fold.context;
         IF (c # NIL) & (c IS TextModels.Context) THEN
@@ -387,7 +387,7 @@
             color := Ports.white
         END;
         font.GetBounds(asc, dsc, fw);
-        f.DrawSString(0, asc, color, icon, font)
+        f.DrawString(0, asc, color, icon + 0X, font)
     END Restore;
 
     PROCEDURE (fold: Fold) CopyFromSimpleView- (source: Views.View);
@@ -737,10 +737,8 @@
             font := Fonts.dir.This(iconFont, 10*Fonts.point (*arbitrary*), {}, Fonts.normal);
             IF font.IsAlien() THEN DefaultAppearance
             ELSE
-                leftExp[0] := SHORT(CHR(240)); leftExp[1] := 0X;
-                rightExp[0] := SHORT(CHR(239)); rightExp[1] := 0X;
-                leftColl[0] := SHORT(CHR(232)); leftColl[1] := 0X;
-                rightColl[0] := SHORT(CHR(231)); rightColl[1] := 0X;
+                leftExp  := 0F0F0X; rightExp  := 0F0EFX; 
+                leftColl := 0F0E8X; rightColl := 0F0E7X;
                 coloredBackg := FALSE
             END
         ELSIF Dialog.platform DIV 10 = 2 THEN (* Mac *)
