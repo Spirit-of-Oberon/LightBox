@@ -5,6 +5,7 @@
     PROCEDURE Setup*;
         VAR res: INTEGER;
     BEGIN
+        Converters.Register("HostUTF8Conv.ImportText", "HostUTF8Conv.ExportText", "TextViews.View", "cps", {Converters.importAll});
         Converters.Register("HostTextConv.ImportText", "HostTextConv.ExportText", "TextViews.View", "txt", {Converters.importAll});
         Converters.Register("HostTextConv.ImportRichText", "HostTextConv.ExportRichText", "TextViews.View", "rtf", {});
         Converters.Register("HostTextConv.ImportUnicode", "HostTextConv.ExportUnicode", "TextViews.View", "utf", {});
