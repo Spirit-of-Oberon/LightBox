@@ -1451,7 +1451,7 @@
             RETURN 0
 *)
         | WinApi.WM_NCLBUTTONDOWN:
-            IF activating & ((wParam = 6) OR (wParam = 7) OR (wParam = 20)) THEN    (* in scrollbar, close *)
+            IF activating & ((wParam = 6) OR (wParam = 7) (*OR (wParam = 20)*)) THEN    (* in scrollbar, close *)
                 Controllers.ResetCurrentPath();
                 RETURN 0
             END
@@ -1486,7 +1486,7 @@
                 style := style + WinApi.WS_MINIMIZEBOX + WinApi.WS_SYSMENU;
                 IF ~(Windows.noResize IN w.flags) THEN style := style + WinApi.WS_MAXIMIZEBOX END
             ELSIF mainActive THEN
-                style := style - {16, 17, 19}    (* minimize box, maximize box, sysmenu *)
+                (*style := style - {16, 17, 19}*)    (* minimize box, maximize box, sysmenu *)
             END;
             res := WinApi.SetWindowLongW(wnd, -16, ORD(style))
         | WinApi.WM_WINDOWPOSCHANGED:
