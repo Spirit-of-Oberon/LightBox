@@ -267,9 +267,10 @@
 
     PROCEDURE (h: ViewHook) OldView (loc: Files.Locator; name: Files.Name;
                                                                 VAR conv: Converters.Converter): Views.View;
-        VAR w: Windows.Window; s: Stores.Store; c: Converters.Converter;
+        VAR w: Windows.Window; s: Stores.Store; c: Converters.Converter; srcname: Files.Name;
     BEGIN
         ASSERT(loc # NIL, 20); ASSERT(name # "", 21);
+        srcname := name;
         Kernel.MakeFileName(name, ""); s := NIL;
         IF loc.res # 77 THEN
             w := Windows.dir.First(); c := conv;
@@ -279,6 +280,11 @@
                 w := Windows.dir.Next(w)
             END;
             IF w # NIL THEN s := w.doc.ThisView() END
+        END;
+        Kernel.MakeFileName(srcname, Kernel.srcType); s := NIL;
+        IF s = NIL THEN
+            Converters.Import(loc, srcname, conv, s);
+            IF s # NIL THEN RecalcView(s(Views.View)) END
         END;
         IF s = NIL THEN
             Converters.Import(loc, name, conv, s);
