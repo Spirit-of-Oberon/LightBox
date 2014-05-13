@@ -13,7 +13,7 @@
     
     IMPORT
         Kernel, Files, Fonts, Models, Views, Dialog, Containers,
-        StdDialog,
+        StdDialog, Converters,
         TextModels, TextMappers, TextViews, TextControllers;
     
     CONST
@@ -61,7 +61,7 @@
     END SearchIdent;
 
     PROCEDURE ShowText* (module, ident: TextMappers.String; category: Files.Name);
-        VAR title: Views.Title; loc: Files.Locator; name: Files.Name;
+        VAR title: Views.Title; loc: Files.Locator; name: Files.Name; conv: Converters.Converter;
             v: Views.View; m: Models.Model; t: TextModels.Model; beg, end: INTEGER; c: Containers.Controller;
     BEGIN
         StdDialog.GetSubLoc(module, category, loc, name); title := name$;
@@ -79,8 +79,9 @@
                 Views.OpenAux(v, title)
             END
         ELSE
-            v := Views.OldView(loc, name);
-            IF v # NIL THEN Views.Open(v, loc, name, NIL) END
+            conv := NIL;
+            v := Views.Old(Views.dontAsk, loc, name, conv);
+            IF v # NIL THEN Views.Open(v, loc, name, conv) END
         END;
         IF v # NIL THEN
             m := v.ThisModel();
