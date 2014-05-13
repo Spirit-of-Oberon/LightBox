@@ -1,0 +1,5 @@
+*.*
+/Com/Interfaces
+/Sql/Database
+!*.cps
+!.gitignore
