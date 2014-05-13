@@ -1149,7 +1149,7 @@
         END;
         i := 0;
         WHILE name[i] # 0X DO ntab[idx] := name[i]; INC(idx); INC(i) END;
-        IF (hint = -1) & ((ntab[idx-4] # ".") OR (CAP(ntab[idx-3]) # "D") OR (CAP(ntab[idx-2]) # "L") OR (CAP(ntab[idx-1]) # "L")) THEN
+        IF (idx < 4) OR (hint = -1) & ((ntab[idx-4] # ".") OR (CAP(ntab[idx-3]) # "D") OR (CAP(ntab[idx-2]) # "L") OR (CAP(ntab[idx-1]) # "L")) THEN
             ntab[idx] := "."; INC(idx);
             ntab[idx] := "d"; INC(idx);
             ntab[idx] := "l"; INC(idx);
