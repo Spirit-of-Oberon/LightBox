@@ -166,7 +166,7 @@
                 END;
                 files := Files.dir.FileList(loc);
                 WHILE files # NIL DO
-                    IF files.type = Kernel.docType THEN
+                    IF (files.type = Kernel.docType) OR source & (files.type = Kernel.srcType) THEN
                         p := path + "/" + files.name;
                         t := ThisText(loc, files.name);
                         IF t # NIL THEN

@@ -40,6 +40,7 @@
     BEGIN
         IF (cat[0] = "S") & (cat[1] = "y") & (cat[2] = "m") THEN type := Kernel.symType
         ELSIF (cat[0] = "C") & (cat[1] = "o") & (cat[2] = "d") & (cat[3] = "e") THEN type := Kernel.objType
+        ELSIF (cat[0] = "M") & (cat[1] = "o") & (cat[2] = "d") THEN type := Kernel.srcType
         ELSE type := ""
         END;
         Kernel.SplitName(mod, sub, name); Kernel.MakeFileName(name, type);

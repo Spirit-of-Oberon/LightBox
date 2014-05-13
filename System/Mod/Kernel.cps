@@ -28,6 +28,7 @@
         objType* = "ocf";    (* file types *)
         symType* = "osf";
         docType* = "odc";
+        srcType* = "cps";
 
         (* loader constants *)
         done* = 0;
