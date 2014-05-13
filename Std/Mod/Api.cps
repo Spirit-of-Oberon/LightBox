@@ -165,12 +165,12 @@
     END OpenAuxDialog;
     
     PROCEDURE OpenBrowser* (file, title: ARRAY OF CHAR; OUT v: Views.View);
-        VAR loc: Files.Locator; name: Files.Name; t: Views.Title;
+        VAR loc: Files.Locator; name: Files.Name; t: Views.Title; conv: Converters.Converter;
             c: Containers.Controller;
     BEGIN
         PathToSpec(file, loc, name);
         IF loc.res = 0 THEN
-            loc.res := 77; v := Views.OldView(loc, name); loc.res := 0;
+            loc.res := 77; conv := NIL; v := Views.Old(Views.dontAsk, loc, name, conv); loc.res := 0;
             IF v # NIL THEN
                 WITH v: Containers.View DO
                     c := v.ThisController();
@@ -180,7 +180,7 @@
                 ELSE
                 END;
                 t := title$;
-                StdDialog.Open(v, t, NIL, "", NIL, FALSE, TRUE, FALSE, TRUE, FALSE)
+                StdDialog.Open(v, t, loc, name, conv, FALSE, TRUE, FALSE, TRUE, FALSE)
             ELSE Dialog.ShowParamMsg("#System:FileNotFound", file, "", "")
             END
         ELSE Dialog.ShowParamMsg("#System:FileNotFound", file, "", "")
