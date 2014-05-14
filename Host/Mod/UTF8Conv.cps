@@ -122,8 +122,10 @@
             rd.SetPos(0);    
             rd.Read;
             WHILE ~rd.eot DO
-                WriteChar(wr, rd.char);
-                IF rd.char = CR THEN WriteChar(wr, LF) END;
+                IF rd.char # TextModels.viewcode THEN
+                    WriteChar(wr, rd.char);
+                    IF rd.char = CR THEN WriteChar(wr, LF) END;
+                END;
                 rd.Read;
             END
         END
