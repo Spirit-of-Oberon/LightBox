@@ -1,12 +1,20 @@
 ﻿MODULE CApiTypes;
-
+IMPORT SYSTEM;
 TYPE
 
-   void* = INTEGER;
+   p_void* = POINTER TO RECORD [untagged] END;
 
    char*          = SHORTCHAR;
    unsigned_char* = char;
    signed_char*   = BYTE;
+
+   p_char*   = POINTER TO ARRAY [untagged] OF char;
+   p_p_char* = POINTER TO ARRAY [untagged] OF p_char;
+   
+   wchar*     = CHAR;
+
+   p_wchar*   = POINTER TO ARRAY [untagged] OF wchar;
+   p_p_wchar* = POINTER TO ARRAY [untagged] OF p_wchar;
 
    int*          = INTEGER;
    signed_int*   = int;
