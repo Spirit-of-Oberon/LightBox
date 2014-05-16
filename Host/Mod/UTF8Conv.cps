@@ -122,7 +122,7 @@
             rd.SetPos(0);    
             rd.Read;
             WHILE ~rd.eot DO
-                IF rd.char # TextModels.viewcode THEN
+                IF (rd.char # TextModels.viewcode) & (rd.char # TextModels.para) THEN
                     WriteChar(wr, rd.char);
                     IF rd.char = CR THEN WriteChar(wr, LF) END;
                 END;
