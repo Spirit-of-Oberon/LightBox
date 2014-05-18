@@ -233,7 +233,7 @@
     END CompileSelection;
 
     PROCEDURE CompileList (beg, end: INTEGER; c: TextControllers.Controller);
-        VAR v: Views.View; i: INTEGER; error, one: BOOLEAN; name: Files.Name; loc: Files.Locator;
+        VAR v: Views.View; i: INTEGER; error, one: BOOLEAN; name, docname: Files.Name; loc: Files.Locator;
             t: TextModels.Model; opts: SET; title, entry: ARRAY 64 OF CHAR;
     BEGIN
         s.SetPos(beg); s.Scan; one := FALSE;
@@ -261,7 +261,19 @@
                         WITH v: TextViews.View DO t := v.ThisModel()
                         ELSE Dialog.ShowParamMsg("#Dev:NoTextFileFound", name, "", ""); error := TRUE
                         END
-                    ELSE Dialog.ShowParamMsg("#Dev:CannotOpenFile", name, "", ""); error := TRUE
+                    ELSE
+                        StdDialog.GetSubLoc(s.string + "." + Kernel.docType, "Mod", loc, docname);
+                        v := Views.OldView(loc, docname);
+                        IF v # NIL THEN
+                            WITH v: TextViews.View DO
+                                t := v.ThisModel();
+                                name := docname;
+                            ELSE
+                                Dialog.ShowParamMsg("#Dev:NoTextFileFound", name, "", ""); error := TRUE
+                            END
+                        ELSE
+                            Dialog.ShowParamMsg("#Dev:CannotOpenFile", name, "", ""); error := TRUE
+                        END;
                     END
                 ELSE Dialog.ShowParamMsg("#System:FileNotFound", name, "", ""); error := TRUE
                 END;
