@@ -772,13 +772,20 @@
     END Scan;
     
     PROCEDURE ShowSourcePos (name: Name; adr: INTEGER);
-        VAR loc: Files.Locator; fname: Files.Name; v: Views.View; m: Models.Model; conv: Converters.Converter;
+        VAR loc: Files.Locator; fname, docname: Files.Name; v: Views.View; m: Models.Model; conv: Converters.Converter;
             c: Containers.Controller; beg, end, p: INTEGER; s: TextMappers.Scanner; w: Windows.Window;
             n: ARRAY 256 OF CHAR;
     BEGIN
         (* search source by name heuristic *)
         n := name$; StdDialog.GetSubLoc(n, "Mod", loc, fname);
         v := Views.OldView(loc, fname); m := NIL;
+        IF v = NIL THEN
+            StdDialog.GetSubLoc(n + "." + Kernel.docType, "Mod", loc, docname);
+            v := Views.OldView(loc, docname);
+            IF v # NIL THEN
+                fname := docname;
+            END;
+        END;
         IF v # NIL THEN
             Views.Open(v, loc, fname, NIL);
             m := v.ThisModel();
