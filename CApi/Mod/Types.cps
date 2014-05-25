@@ -2,6 +2,8 @@
 IMPORT SYSTEM;
 TYPE
 
+   size_t* = INTEGER; (* should be unsigned int *)
+
    p_void* = POINTER TO RECORD [untagged] END;
 
    char*          = SHORTCHAR;
